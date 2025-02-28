@@ -20,14 +20,6 @@ test("100 articles sorted", async ({ page }) => {
     .locator(".age")
     .evaluateAll((ages) => ages.map((age) => age.getAttribute("title")));
   let timesCombined = [...times1, ...times2];
-  if (timesCombined.length < 100) {
-    await moreButton.click();
-    const nextPageTimes = await page
-      .locator(".age")
-      .evaluateAll((ages) => ages.map((age) => age.getAttribute("title")));
-    const newCombinedTimes = [...timesCombined, ...nextPageTimes];
-    timesCombined = newCombinedTimes;
-  }
 
   while (timesCombined.length < 100) {
     await moreButton.click();
@@ -39,4 +31,9 @@ test("100 articles sorted", async ({ page }) => {
     timesCombined = [...timesCombined, ...nextPageTimes];
     console.log(timesCombined.length);
   }
+  const times100 = timesCombined;
+  if (timesCombined.length > 100) {
+    times100 = timesCombined.slice(0, timesCombined.length - 100);
+  }
+  const timeStamps100 = times100.map((time) => time.slice(20));
 });
