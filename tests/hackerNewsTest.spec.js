@@ -28,14 +28,15 @@ test("100 articles sorted", async ({ page }) => {
     const newCombinedTimes = [...timesCombined, ...nextPageTimes];
     timesCombined = newCombinedTimes;
   }
-  console.log(timesCombined.length);
-  for (let i = timesCombined.length; i < 100; ) {
+
+  while (timesCombined.length < 100) {
     await moreButton.click();
+
     const nextPageTimes = await page
       .locator(".age")
       .evaluateAll((ages) => ages.map((age) => age.getAttribute("title")));
-    const newCombinedTimes = [...timesCombined, ...nextPageTimes];
-    timesCombined = newCombinedTimes;
+
+    timesCombined = [...timesCombined, ...nextPageTimes];
     console.log(timesCombined.length);
   }
 });
