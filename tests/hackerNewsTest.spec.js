@@ -14,6 +14,7 @@ test("100 articles sorted", async ({ page }) => {
   const timeStamps1 = times1.map((time) => time.slice(20));
   // Rearranging the timestamps in the descending order
   const sortedTimeStamps1 = [...timeStamps1].sort((a, b) => b - a);
+  // Expect articles from the 1st page to be in order from newest to oldest
   expect(timeStamps1).toEqual(sortedTimeStamps1);
   await moreButton.click();
   const times2 = await page
@@ -29,11 +30,15 @@ test("100 articles sorted", async ({ page }) => {
       .evaluateAll((ages) => ages.map((age) => age.getAttribute("title")));
 
     timesCombined = [...timesCombined, ...nextPageTimes];
-    console.log(timesCombined.length);
   }
-  const times100 = timesCombined;
+  let times100 = timesCombined;
+
   if (timesCombined.length > 100) {
-    times100 = timesCombined.slice(0, timesCombined.length - 100);
+    times100 = timesCombined.slice(0, 100);
   }
+
   const timeStamps100 = times100.map((time) => time.slice(20));
+  const sortedTimeStamps100 = [...timeStamps100].sort((a, b) => b - a);
+  // Expect the first 100 articles to be in order from newest to oldest
+  expect(timeStamps100).toEqual(sortedTimeStamps100);
 });
