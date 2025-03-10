@@ -16,6 +16,7 @@ test("100 articles sorted", async ({ page }) => {
   const sortedTimeStamps1 = [...timeStamps1].sort((a, b) => b - a);
   // Expect articles from the 1st page to be in order from newest to oldest
   expect(timeStamps1).toEqual(sortedTimeStamps1);
+
   await moreButton.click();
   const times2 = await page
     .locator(".age")
